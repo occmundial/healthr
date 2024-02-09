@@ -13,7 +13,9 @@ Redis <- R6::R6Class(
                           db = Sys.getenv("REDIS_DB")) {
       self$connect(host, port, db)
     },
-    connect = function(host, port, db) {
+    connect = function(host = Sys.getenv("REDIS_HOST"),
+                       port = Sys.getenv("REDIS_PORT"),
+                       db = Sys.getenv("REDIS_DB")) {
       config <- redux::redis_config(host = host, port = port, db = db)
       private$.connection <- redux::hiredis(config)
       invisible(self)

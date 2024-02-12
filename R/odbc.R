@@ -22,6 +22,12 @@ Odbc <- R6::R6Class(
                        user = Sys.getenv("DB_USER"),
                        password = Sys.getenv("DB_PASSWORD"),
                        extra = "ApplicationIntent=ReadOnly") {
+      checkmate::assertString(driver)
+      checkmate::assertString(host)
+      checkmate::assertString(name)
+      checkmate::assertString(user)
+      checkmate::assertString(password)
+      checkmate::assertString(extra)
       string <- sprintf("DRIVER={%s};server=%s;database=%s;uid=%s;pwd=%s;%s", driver, host, name, user, password, extra)
       private$.connection <- RODBC::odbcDriverConnect(string, readOnlyOptimize = TRUE)
       invisible(self)
@@ -31,6 +37,7 @@ Odbc <- R6::R6Class(
       invisible(self)
     },
     consult = function(query) {
+      checkmate::assertString(query)
       RODBC::sqlQuery(private$.connection, query)
     }
   ),

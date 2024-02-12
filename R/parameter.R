@@ -12,9 +12,14 @@ Parameter <- R6::R6Class(
       self$set(query, by, horizont)
     },
     set = function(query, by = 1L, horizont = 1440L) {
-      private$.query <- query
+      checkmate::assertInt(by, lower = 1L, upper = 60L)
+      checkmate::assertInt(horizont / by, lower = 1L)
       private$.sequence <- rep(seq_len(horizont / by), each = by)
-      private$.validator <- data.table::data.table(period = seq_len(horizont) - 1L, count = 0L)
+      if (!missing(query)) {
+        checkmate::assertString(query)
+        private$.query <- query
+        private$.validator <- data.table::data.table(period = seq_len(horizont) - 1L, count = 0L)
+      }
       invisible(self)
     }
   ),

@@ -34,7 +34,11 @@ Creates a Redis class
 \if{latex}{\out{\hypertarget{method-Redis-connect}{}}}
 \subsection{Method \code{connect()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Redis$connect(host, port, db)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Redis$connect(
+  host = Sys.getenv("REDIS_HOST"),
+  port = Sys.getenv("REDIS_PORT"),
+  db = Sys.getenv("REDIS_DB")
+)}\if{html}{\out{</div>}}
 }
 
 }

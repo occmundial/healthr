@@ -16,6 +16,9 @@ Redis <- R6::R6Class(
     connect = function(host = Sys.getenv("REDIS_HOST"),
                        port = Sys.getenv("REDIS_PORT"),
                        db = Sys.getenv("REDIS_DB")) {
+      checkmate::assertString(host)
+      checkmate::assertString(port)
+      checkmate::assertString(db)
       config <- redux::redis_config(host = host, port = port, db = db)
       private$.connection <- redux::hiredis(config)
       invisible(self)

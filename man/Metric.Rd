@@ -12,6 +12,7 @@ Creates a Metric class
 \item \href{#method-Metric-new}{\code{Metric$new()}}
 \item \href{#method-Metric-count}{\code{Metric$count()}}
 \item \href{#method-Metric-save}{\code{Metric$save()}}
+\item \href{#method-Metric-read}{\code{Metric$read()}}
 \item \href{#method-Metric-clone}{\code{Metric$clone()}}
 }
 }
@@ -39,6 +40,15 @@ Creates a Metric class
 \subsection{Method \code{save()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Metric$save(redis)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Metric-read"></a>}}
+\if{latex}{\out{\hypertarget{method-Metric-read}{}}}
+\subsection{Method \code{read()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Metric$read(redis, parameter)}\if{html}{\out{</div>}}
 }
 
 }

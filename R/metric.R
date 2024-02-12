@@ -13,6 +13,8 @@ Metric <- R6::R6Class(
       invisible(self)
     },
     count = function(odbc, parameter) {
+      checkmate::assertR6(odbc, classes = "Odbc")
+      checkmate::assertR6(parameter, classes = "Parameter")
       dt <- odbc$consult(parameter$query)
       data.table::setDT(dt)
       dt[, date := as.POSIXct(date)]
@@ -27,7 +29,17 @@ Metric <- R6::R6Class(
       invisible(self)
     },
     save = function(redis) {
+      checkmate::assertR6(redis, classes = "Redis")
       redis$set(private$.name, yyjsonr::write_json_str(private$.values$count))
+      invisible(self)
+    },
+    read = function(redis, parameter) {
+      checkmate::assertR6(redis, classes = "Redis")
+      checkmate::assertR6(parameter, classes = "Parameter")
+      json <- redis$get(private$.name)
+      dt <- data.table::data.table(count = yyjsonr::read_json_str(json))
+      private$.values <- dt[, .(count = sum(count)), by = .(period = parameter$sequence)]
+      invisible(self)
     }
   ),
   active = list(

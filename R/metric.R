@@ -23,9 +23,9 @@ Metric <- R6::R6Class(
       dt[, day := .GRP - 1L, by = .(data.table::yday(date))]
       dt[, period := 1440L * day + 60L * data.table::hour(date) + data.table::minute(date)]
       dt[, day := NULL]
-      private$.values <- data.table::copy(parameter$validator)
-      private$.values[dt, count := i.count, on = .(period)]
-      private$.values[, .(count = sum(count)), by = .(period = parameter$sequence)]
+      validator <- data.table::copy(parameter$validator)
+      validator[dt, count := i.count, on = .(period)]
+      private$.values <- validator[, .(count = sum(count)), by = .(period = parameter$sequence)]
       data.table::setkey(private$.values, period)
       invisible(self)
     },

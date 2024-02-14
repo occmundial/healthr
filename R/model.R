@@ -36,7 +36,7 @@ Model <- R6::R6Class(
     },
     predict = function(level = 99L) {
       checkmate::assertInt(level, lower = 80L, upper = 99L)
-      fourier <- data.frame(values = forecast::fourier(ts_serie, K = 4, h = private$.parameter$period))
+      fourier <- data.frame(values = forecast::fourier(private$.serie, K = 4, h = private$.parameter$period))
       linear <- forecast::forecast(private$.model, newdata = fourier, level = level)
       private$.prediction <- lapply(c("lower", "mean", "upper"), function(x) {
         values <- as.integer(linear[[x]])

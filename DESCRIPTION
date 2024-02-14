@@ -12,7 +12,9 @@ RoxygenNote: 7.2.3
 Imports: 
     checkmate,
     data.table,
+    forecast,
     R6,
     redux,
     RODBC,
+    stats,
     yyjsonr

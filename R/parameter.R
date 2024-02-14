@@ -14,6 +14,7 @@ Parameter <- R6::R6Class(
     set = function(query, by = 1L, horizont = 1440L) {
       checkmate::assertInt(by, lower = 1L, upper = 60L)
       checkmate::assertInt(horizont / by, lower = 1L)
+      private$.period <- 1440L / by
       private$.sequence <- rep(seq_len(horizont / by), each = by)
       if (!missing(query)) {
         checkmate::assertString(query)
@@ -24,11 +25,13 @@ Parameter <- R6::R6Class(
     }
   ),
   active = list(
+    period = function() private$.period,
     query = function() private$.query,
-    validator = function() private$.validator,
-    sequence = function() private$.sequence
+    sequence = function() private$.sequence,
+    validator = function() private$.validator
   ),
   private = list(
+    .period = NULL,
     .query = NULL,
     .sequence = NULL,
     .validator = NULL

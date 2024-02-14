@@ -10,6 +10,7 @@ Model <- R6::R6Class(
   inherit = Metric,
   public = list(
     normalize = function() {
+      if (checkmate::testNull(private$.dt)) stop("Count the values first")
       private$.dt[, group := period %% private$.params$period]
       index <- private$.dt[, .I[which.min(count)], by = .(group)]$V1
       private$.dt[index, count := NA_integer_]
@@ -24,12 +25,15 @@ Model <- R6::R6Class(
       invisible(self)
     },
     train = function() {
+      if (checkmate::testNull(private$.serie)) stop("Normalize the values first")
       fourier <- forecast::fourier(private$.serie, K = 4)
       private$.model <- forecast::tslm(private$.serie ~ fourier)
       invisible(self)
     },
     predict = function(level = 99L) {
       checkmate::assertInt(level, lower = 80L, upper = 99L)
+      if (checkmate::testNull(private$.serie)) stop("Normalize the values first")
+      if (checkmate::testNull(private$.model)) stop("Train the model first")
       fourier <- data.frame(values = forecast::fourier(private$.serie, K = 4, h = private$.params$period))
       linear <- forecast::forecast(private$.model, newdata = fourier, level = level)
       private$.prediction <- sapply(c("lower", "mean", "upper"), function(x) {
@@ -41,6 +45,7 @@ Model <- R6::R6Class(
     },
     save = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
+      if (checkmate::testNull(private$.prediction)) stop("Predict the values first")
       redis$set(private$.name, yyjsonr::write_json_str(private$.prediction))
       invisible(self)
     },

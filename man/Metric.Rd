@@ -31,7 +31,7 @@ Creates a Metric class
 \if{latex}{\out{\hypertarget{method-Metric-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Metric$new(name)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Metric$new(name, query, by = 1L, horizont = 1440L)}\if{html}{\out{</div>}}
 }
 
 }

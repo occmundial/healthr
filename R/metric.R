@@ -9,12 +9,14 @@ Metric <- R6::R6Class(
   classname = "Metric",
   inherit = Parameter,
   public = list(
-    initialize = function(name) {
+    initialize = function(name, query, by = 1L, horizont = 1440L) {
       private$.name <- name
+      self$set(query, by, horizont)
       invisible(self)
     },
     count = function(odbc) {
       checkmate::assertR6(odbc, classes = "Odbc")
+      if (checkmate::testNull(private$.params$query)) stop("Set a query first")
       dt <- odbc$consult(private$.params$query)
       data.table::setDT(dt)
       dt[, date := as.POSIXct(date)]
@@ -30,6 +32,7 @@ Metric <- R6::R6Class(
     },
     save = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
+      if (checkmate::testNull(private$.dt)) stop("Count the values first")
       redis$set(private$.name, yyjsonr::write_json_str(private$.dt$count))
       invisible(self)
     },

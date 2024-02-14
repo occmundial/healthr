@@ -7,49 +7,45 @@
 #'
 Metric <- R6::R6Class(
   classname = "Metric",
+  inherit = Parameter,
   public = list(
     initialize = function(name) {
       private$.name <- name
       invisible(self)
     },
-    count = function(odbc, parameter) {
+    count = function(odbc) {
       checkmate::assertR6(odbc, classes = "Odbc")
-      checkmate::assertR6(parameter, classes = "Parameter")
-      private$.parameter <- parameter
-      dt <- odbc$consult(parameter$query)
+      dt <- odbc$consult(private$.params$query)
       data.table::setDT(dt)
       dt[, date := as.POSIXct(date)]
       data.table::setorder(dt, date)
       dt[, day := .GRP - 1L, by = .(data.table::yday(date))]
       dt[, period := 1440L * day + 60L * data.table::hour(date) + data.table::minute(date)]
       dt[, day := NULL]
-      validator <- data.table::copy(parameter$validator)
+      validator <- data.table::copy(private$.params$validator)
       validator[dt, count := i.count, on = .(period)]
-      private$.values <- validator[, .(count = sum(count)), by = .(period = parameter$sequence)]
-      data.table::setkey(private$.values, period)
+      private$.dt <- validator[, .(count = sum(count)), by = .(period = private$.params$sequence)]
+      data.table::setkey(private$.dt, period)
       invisible(self)
     },
     save = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
-      redis$set(private$.name, yyjsonr::write_json_str(private$.values$count))
+      redis$set(private$.name, yyjsonr::write_json_str(private$.dt$count))
       invisible(self)
     },
-    read = function(redis, parameter) {
+    read = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
-      checkmate::assertR6(parameter, classes = "Parameter")
       json <- redis$get(private$.name)
       dt <- data.table::data.table(count = yyjsonr::read_json_str(json))
-      private$.values <- dt[, .(count = sum(count)), by = .(period = parameter$sequence)]
+      private$.dt <- dt[, .(count = sum(count)), by = .(period = private$.params$sequence)]
       invisible(self)
     }
   ),
   active = list(
-    parameter = function() private$.parameter,
-    values = function() private$.values
+    dt = function() private$.dt
   ),
   private = list(
     .name = NULL,
-    .parameter = NULL,
-    .values = NULL
+    .dt = NULL
   )
 )

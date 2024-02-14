@@ -6,6 +6,9 @@
 \description{
 Creates a Metric class
 }
+\section{Super class}{
+\code{\link[healthr:Parameter]{healthr::Parameter}} -> \code{Metric}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -16,6 +19,13 @@ Creates a Metric class
 \item \href{#method-Metric-clone}{\code{Metric$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="healthr" data-topic="Parameter" data-id="set"><a href='../../healthr/html/Parameter.html#method-Parameter-set'><code>healthr::Parameter$set()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Metric-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Metric-new}{}}}
@@ -30,7 +40,7 @@ Creates a Metric class
 \if{latex}{\out{\hypertarget{method-Metric-count}{}}}
 \subsection{Method \code{count()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Metric$count(odbc, parameter)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Metric$count(odbc)}\if{html}{\out{</div>}}
 }
 
 }
@@ -48,7 +58,7 @@ Creates a Metric class
 \if{latex}{\out{\hypertarget{method-Metric-read}{}}}
 \subsection{Method \code{read()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Metric$read(redis, parameter)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Metric$read(redis)}\if{html}{\out{</div>}}
 }
 
 }

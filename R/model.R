@@ -47,7 +47,7 @@ Model <- R6::R6Class(
       checkmate::assertR6(redis, classes = "Redis")
       if (checkmate::testNull(private$.prediction)) stop("Predict the values first")
       redis$set(private$.name, yyjsonr::write_json_str(private$.prediction))
-      invisible(self)
+      # invisible(self)
     },
     read = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")

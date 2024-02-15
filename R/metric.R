@@ -34,7 +34,7 @@ Metric <- R6::R6Class(
       checkmate::assertR6(redis, classes = "Redis")
       if (checkmate::testNull(private$.dt)) stop("Count the values first")
       redis$set(private$.name, yyjsonr::write_json_str(private$.dt$count))
-      invisible(self)
+      # invisible(self)
     },
     read = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")

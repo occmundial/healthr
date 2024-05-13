@@ -9,6 +9,12 @@ Model <- R6::R6Class(
   classname = "Model",
   inherit = Metric,
   public = list(
+    initialize = function(name, query, by = 1L, horizont = 4L * 1440L) {
+      private$.name <- name
+      private$.id <- paste("Model", name, by)
+      self$set(query, by, horizont)
+      invisible(self)
+    },
     normalize = function() {
       if (checkmate::testNull(private$.dt)) stop("Count the values first")
       private$.dt[, group := period %% private$.params$period]

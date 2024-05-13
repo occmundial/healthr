@@ -13,6 +13,7 @@ Imports:
     checkmate,
     data.table,
     forecast,
+    httr,
     R6,
     redux,
     RODBC,

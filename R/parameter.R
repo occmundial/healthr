@@ -14,6 +14,8 @@ Parameter <- R6::R6Class(
     set = function(query, by = 1L, horizont = 1440L) {
       checkmate::assertInt(by, lower = 1L, upper = 60L)
       checkmate::assertInt(horizont / by, lower = 1L)
+      private$.params$by <- by
+      private$.params$horizont <- horizont
       private$.params$period <- 1440L / by
       private$.params$sequence <- rep(seq_len(horizont / by), each = by)
       if (!missing(query)) {
@@ -29,6 +31,8 @@ Parameter <- R6::R6Class(
   ),
   private = list(
     .params = list(
+      by = NULL,
+      horizont = NULL,
       period = NULL,
       query = NULL,
       sequence = NULL,

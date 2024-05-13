@@ -11,6 +11,7 @@ Metric <- R6::R6Class(
   public = list(
     initialize = function(name, query, by = 1L, horizont = 1440L) {
       private$.name <- name
+      private$.id <- paste("Metric", name, by)
       self$set(query, by, horizont)
       invisible(self)
     },
@@ -45,10 +46,13 @@ Metric <- R6::R6Class(
     }
   ),
   active = list(
-    dt = function() private$.dt
+    dt = function() private$.dt,
+    id = function() private$.id,
+    name = function() private$.name
   ),
   private = list(
-    .name = NULL,
-    .dt = NULL
+    .dt = NULL,
+    .id = NULL,
+    .name = NULL
   )
 )

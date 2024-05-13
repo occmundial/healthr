@@ -12,6 +12,7 @@ Creates a Model class
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-Model-new}{\code{Model$new()}}
 \item \href{#method-Model-normalize}{\code{Model$normalize()}}
 \item \href{#method-Model-train}{\code{Model$train()}}
 \item \href{#method-Model-predict}{\code{Model$predict()}}
@@ -25,10 +26,18 @@ Creates a Model class
 <ul>
 <li><span class="pkg-link" data-pkg="healthr" data-topic="Parameter" data-id="set"><a href='../../healthr/html/Parameter.html#method-Parameter-set'><code>healthr::Parameter$set()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="healthr" data-topic="Metric" data-id="count"><a href='../../healthr/html/Metric.html#method-Metric-count'><code>healthr::Metric$count()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="healthr" data-topic="Metric" data-id="initialize"><a href='../../healthr/html/Metric.html#method-Metric-initialize'><code>healthr::Metric$initialize()</code></a></span></li>
 </ul>
 </details>
 }}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Model-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-new}{}}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Model$new(name, query, by = 1L, horizont = 4L * 1440L)}\if{html}{\out{</div>}}
+}
+
+}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Model-normalize"></a>}}
 \if{latex}{\out{\hypertarget{method-Model-normalize}{}}}

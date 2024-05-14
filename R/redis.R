@@ -20,7 +20,9 @@ Redis <- R6::R6Class(
       checkmate::assertString(port)
       checkmate::assertString(db)
       config <- redux::redis_config(host = host, port = port, db = db)
-      private$.connection <- redux::hiredis(config)
+      ok <- try(redux::hiredis(config), silent = TRUE)
+      if (inherits(ok, "try-error")) private$.connection <- -1L
+      else private$.connection <- ok
       invisible(self)
     },
     get = function(key) {

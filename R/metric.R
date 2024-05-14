@@ -34,12 +34,12 @@ Metric <- R6::R6Class(
     save = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
       if (checkmate::testNull(private$.dt)) stop("Count the values first")
-      redis$set(private$.name, yyjsonr::write_json_str(private$.dt$count))
+      redis$set(private$.id, yyjsonr::write_json_str(private$.dt$count))
       # invisible(self)
     },
     read = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
-      json <- redis$get(private$.name)
+      json <- redis$get(private$.id)
       dt <- data.table::data.table(count = yyjsonr::read_json_str(json))
       private$.dt <- dt[, .(count = sum(count)), by = .(period = private$.params$sequence)]
       invisible(self)

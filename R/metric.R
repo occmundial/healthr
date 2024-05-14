@@ -43,6 +43,9 @@ Metric <- R6::R6Class(
       dt <- data.table::data.table(count = yyjsonr::read_json_str(json))
       private$.dt <- dt[, .(count = sum(count)), by = .(period = private$.params$sequence)]
       invisible(self)
+    },
+    pipeline = function(odbc, redis) {
+      self$count(odbc)$save(redis)
     }
   ),
   active = list(

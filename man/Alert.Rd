@@ -9,9 +9,19 @@ Creates an Odbc class
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-Alert-build}{\code{Alert$build()}}
 \item \href{#method-Alert-send}{\code{Alert$send()}}
 \item \href{#method-Alert-clone}{\code{Alert$clone()}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Alert-build"></a>}}
+\if{latex}{\out{\hypertarget{method-Alert-build}{}}}
+\subsection{Method \code{build()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Alert$build(header, section, color)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Alert-send"></a>}}
@@ -19,12 +29,11 @@ Creates an Odbc class
 \subsection{Method \code{send()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Alert$send(
-  text,
   url = Sys.getenv("SLACK_URL"),
   token = Sys.getenv("SLACK_TOKEN"),
   channel = Sys.getenv("SLACK_CHANNEL"),
   username = Sys.getenv("SLACK_USERNAME"),
-  emoji = Sys.getenv("SLACK_EMOJI", ":bird:")
+  emoji = Sys.getenv("SLACK_EMOJI")
 )}\if{html}{\out{</div>}}
 }
 

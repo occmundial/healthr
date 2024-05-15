@@ -30,11 +30,11 @@ Redis <- R6::R6Class(
       invisible(self)
     },
     get = function(key) {
-      if (private$.connection == -1L) stop("REDIS connection is not open")
+      if (identical(private$.connection, -1L)) stop("REDIS connection is not open")
       private$.connection$GET(key)
     },
     set = function(key, value, EX = NULL, PX = NULL, condition = NULL) {
-      if (private$.connection == -1L) stop("REDIS connection is not open")
+      if (identical(private$.connection, -1L)) stop("REDIS connection is not open")
       private$.connection$SET(key, value, EX, PX, condition)
     }
   ),

@@ -21,14 +21,20 @@ Redis <- R6::R6Class(
       checkmate::assertString(db)
       config <- redux::redis_config(host = host, port = port, db = db)
       ok <- try(redux::hiredis(config), silent = TRUE)
-      if (inherits(ok, "try-error")) private$.connection <- -1L
-      else private$.connection <- ok
+      if (inherits(ok, "try-error")) {
+        warning("REDIS connection failed")
+        private$.connection <- -1L
+      } else {
+        private$.connection <- ok
+      }
       invisible(self)
     },
     get = function(key) {
+      if (private$.connection == -1L) stop("REDIS connection is not open")
       private$.connection$GET(key)
     },
     set = function(key, value, EX = NULL, PX = NULL, condition = NULL) {
+      if (private$.connection == -1L) stop("REDIS connection is not open")
       private$.connection$SET(key, value, EX, PX, condition)
     }
   ),

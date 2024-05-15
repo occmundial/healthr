@@ -10,8 +10,7 @@ Model <- R6::R6Class(
   inherit = Metric,
   public = list(
     initialize = function(name, query, by = 1L, horizont = 4L * 1440L) {
-      private$.name <- name
-      private$.id <- paste("Model", name, by)
+      private$.name <- paste("Model", name)
       self$set(query, by, horizont)
       invisible(self)
     },
@@ -52,12 +51,12 @@ Model <- R6::R6Class(
     save = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
       if (checkmate::testNull(private$.prediction)) stop("Predict the values first")
-      redis$set(private$.id, yyjsonr::write_json_str(private$.prediction))
+      redis$set(private$.name, yyjsonr::write_json_str(private$.prediction))
       # invisible(self)
     },
     read = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
-      json <- redis$get(private$.id)
+      json <- redis$get(private$.name)
       private$.prediction <- yyjsonr::read_json_str(json, opts = list(obj_of_arrs_to_df = FALSE))
       invisible(self)
     },

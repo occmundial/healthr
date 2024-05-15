@@ -10,8 +10,7 @@ Metric <- R6::R6Class(
   inherit = Parameter,
   public = list(
     initialize = function(name, query, by = 1L, horizont = 1440L) {
-      private$.name <- name
-      private$.id <- paste("Metric", name, by)
+      private$.name <- paste("Metric", name)
       self$set(query, by, horizont)
       invisible(self)
     },
@@ -34,12 +33,12 @@ Metric <- R6::R6Class(
     save = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
       if (checkmate::testNull(private$.dt)) stop("Count the values first")
-      redis$set(private$.id, yyjsonr::write_json_str(private$.dt$count))
+      redis$set(private$.name, yyjsonr::write_json_str(private$.dt$count))
       # invisible(self)
     },
     read = function(redis) {
       checkmate::assertR6(redis, classes = "Redis")
-      json <- redis$get(private$.id)
+      json <- redis$get(private$.name)
       dt <- data.table::data.table(count = yyjsonr::read_json_str(json))
       private$.dt <- dt[, .(count = sum(count)), by = .(period = private$.params$sequence)]
       invisible(self)
@@ -50,7 +49,6 @@ Metric <- R6::R6Class(
   ),
   active = list(
     dt = function() private$.dt,
-    id = function() private$.id,
     name = function() private$.name
   ),
   private = list(

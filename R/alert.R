@@ -13,7 +13,7 @@ Alert <- R6::R6Class(
                     token = Sys.getenv("SLACK_TOKEN"),
                     channel = Sys.getenv("SLACK_CHANNEL"),
                     username = Sys.getenv("SLACK_USERNAME"),
-                    emoji = Sys.getenv("SLACK_EMOJI", ":bird:")) {
+                    emoji = Sys.getenv("SLACK_EMOJI")) {
       checkmate::assertString(url)
       checkmate::assertString(token)
       checkmate::assertString(channel)

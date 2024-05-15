@@ -8,10 +8,10 @@
 Alert <- R6::R6Class(
   classname = "Alert",
   public = list(
-    build = function(header, section, color) {
+    build = function(header, section, color = "#FFAA00") {
       header <- list(type = "header", text = list(type = "plain_text", text = header))
       section <- list(type = "section", text = list(type = "mrkdwn", text = section))
-      private$.message <- list(color = color, blocks = list(private$.header, private$.section))
+      private$.message <- list(color = color, blocks = list(header, section))
       invisible(self)
     },
     send = function(url = Sys.getenv("SLACK_URL"),

@@ -59,9 +59,6 @@ Model <- R6::R6Class(
       json <- redis$get(private$.name)
       private$.prediction <- yyjsonr::read_json_str(json, opts = list(obj_of_arrs_to_df = FALSE))
       invisible(self)
-    },
-    pipeline = function(odbc, redis) {
-      self$count(odbc)$normalize()$train()$predict()$save(redis)
     }
   ),
   active = list(

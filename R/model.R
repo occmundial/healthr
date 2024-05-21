@@ -29,17 +29,19 @@ Model <- R6::R6Class(
       private$.serie <- stats::ts(private$.dt$count, start = c(1L, 1L), frequency = private$.params$period)
       invisible(self)
     },
-    train = function() {
+    train = function(k = 4L) {
+      checkmate::assertInt(k, lower = 1L, upper = 5L)
       if (checkmate::testNull(private$.serie)) stop("Normalize the values first")
-      fourier <- forecast::fourier(private$.serie, K = 4)
+      fourier <- forecast::fourier(private$.serie, K = k)
       private$.model <- forecast::tslm(private$.serie ~ fourier)
       invisible(self)
     },
-    predict = function(level = 99L) {
+    predict = function(level = 99L, k = 4L) {
       checkmate::assertInt(level, lower = 80L, upper = 99L)
+      checkmate::assertInt(k, lower = 1L, upper = 5L)
       if (checkmate::testNull(private$.serie)) stop("Normalize the values first")
       if (checkmate::testNull(private$.model)) stop("Train the model first")
-      fourier <- data.frame(values = forecast::fourier(private$.serie, K = 4, h = private$.params$period))
+      fourier <- data.frame(values = forecast::fourier(private$.serie, K = k, h = private$.params$period))
       linear <- forecast::forecast(private$.model, newdata = fourier, level = level)
       private$.prediction <- sapply(c("lower", "mean", "upper"), function(x) {
         values <- as.integer(linear[[x]])

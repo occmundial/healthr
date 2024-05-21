@@ -19,7 +19,7 @@ Creates an Odbc class
 \if{latex}{\out{\hypertarget{method-Alert-build}{}}}
 \subsection{Method \code{build()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Alert$build(header, section, color)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Alert$build(header, section, color = "#FFAA00")}\if{html}{\out{</div>}}
 }
 
 }

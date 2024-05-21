@@ -23,7 +23,7 @@ Time <- R6::R6Class(
   ),
   active = list(
     minute = function() 60L * as.integer(format(private$.now, "%H")) + as.integer(format(private$.now, "%M")),
-    now = function() format(private$.now, "%Y-%m-%d %H:%M"),
+    now = function() format(private$.now, "%Y-%m-%d_%H:%M"),
     serie = function() private$.serie
   ),
   private = list(

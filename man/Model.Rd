@@ -52,7 +52,7 @@ Creates a Model class
 \if{latex}{\out{\hypertarget{method-Model-train}{}}}
 \subsection{Method \code{train()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$train()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$train(k = 4L)}\if{html}{\out{</div>}}
 }
 
 }
@@ -61,7 +61,7 @@ Creates a Model class
 \if{latex}{\out{\hypertarget{method-Model-predict}{}}}
 \subsection{Method \code{predict()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$predict(level = 99L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$predict(level = 99L, k = 4L)}\if{html}{\out{</div>}}
 }
 
 }

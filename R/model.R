@@ -10,7 +10,7 @@ Model <- R6::R6Class(
   inherit = Metric,
   public = list(
     initialize = function(name, query, by = 1L, horizont = 4L * 1440L) {
-      private$.name <- paste("Model", name)
+      private$.name <- paste("Model", name, by)
       self$set(query, by, horizont)
       invisible(self)
     },

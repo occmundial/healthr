@@ -30,7 +30,6 @@ Time <- R6::R6Class(
     }
   ),
   active = list(
-    date = function() format(private$.now, "%Y-%m-%d_%H:%M"),
     minute = function() private$.minute,
     now = function() private$.now,
     period = function() private$.period,

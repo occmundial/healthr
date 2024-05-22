@@ -17,7 +17,7 @@ Time <- R6::R6Class(
     scale = function(by = 1L, horizont = 1440L) {
       checkmate::assertInt(by, lower = 1L, upper = 60L)
       checkmate::assertInt(horizont / by, lower = 1L)
-      private$.period <- round(private$.minute / by)
+      private$.period <- floor(private$.minute / by)
       date <- as.POSIXct(paste(format(private$.now, "%Y-%m-%d"), "00:00"))
       private$.serie <- seq.POSIXt(date, by = paste(by, "min"), length.out = horizont / by)
       invisible(self)

@@ -8,10 +8,16 @@
 Time <- R6::R6Class(
   classname = "Time",
   public = list(
-    initialize = function(add = 6L * 60L * 60L) {
+    initialize = function(add = 6L * 60L * 60L, date) {
       checkmate::assertInt(add, lower = 0L)
-      private$.now <- Sys.time() - add
-      private$.minute <- 60L * as.integer(format(private$.now, "%H")) + as.integer(format(private$.now, "%M"))
+      if (!missing(date)) {
+        checkmate::assertString(date, pattern = "^\\d{4}-\\d{2}-\\d{2}$")
+        private$.now <- as.POSIXct(paste(date, "00:00"))
+        private$.minute <- 1440L
+      } else {
+        private$.now <- Sys.time() - add
+        private$.minute <- 60L * as.integer(format(private$.now, "%H")) + as.integer(format(private$.now, "%M"))
+      }
       invisible(self)
     },
     scale = function(by = 1L, horizont = 1440L) {
@@ -24,8 +30,9 @@ Time <- R6::R6Class(
     }
   ),
   active = list(
+    date = function() format(private$.now, "%Y-%m-%d_%H:%M"),
     minute = function() private$.minute,
-    now = function() format(private$.now, "%Y-%m-%d_%H:%M"),
+    now = function() private$.now,
     period = function() private$.period,
     serie = function() private$.serie
   ),

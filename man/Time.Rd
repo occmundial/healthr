@@ -10,7 +10,7 @@ Creates a Time class
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Time-new}{\code{Time$new()}}
-\item \href{#method-Time-sequence}{\code{Time$sequence()}}
+\item \href{#method-Time-scale}{\code{Time$scale()}}
 \item \href{#method-Time-clone}{\code{Time$clone()}}
 }
 }
@@ -24,11 +24,11 @@ Creates a Time class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Time-sequence"></a>}}
-\if{latex}{\out{\hypertarget{method-Time-sequence}{}}}
-\subsection{Method \code{sequence()}}{
+\if{html}{\out{<a id="method-Time-scale"></a>}}
+\if{latex}{\out{\hypertarget{method-Time-scale}{}}}
+\subsection{Method \code{scale()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Time$sequence(by = 1L, horizont = 1440L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Time$scale(by = 1L, horizont = 1440L)}\if{html}{\out{</div>}}
 }
 
 }

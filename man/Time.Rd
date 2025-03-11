@@ -19,7 +19,7 @@ Creates a Time class
 \if{latex}{\out{\hypertarget{method-Time-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Time$new(add = 6L * 60L * 60L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Time$new(add = 6L * 60L * 60L, date)}\if{html}{\out{</div>}}
 }
 
 }

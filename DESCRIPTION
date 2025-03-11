@@ -1,21 +1,21 @@
 Package: healthr
-Title: Functions for Health Tracing 
+Title: Functions for Health Tracing
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person("Abraham", "Jaimes", , "ajaimes@occ.com.mx", role = c("aut", "cre"))
 Description: Functions for Health Tracing in OCC standarizing classes and methods
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-Imports: 
+RoxygenNote: 7.3.2
+Imports:
     checkmate,
     data.table,
     forecast,
     httr,
+    pool,
     R6,
     redux,
-    RODBC,
     stats,
     yyjsonr

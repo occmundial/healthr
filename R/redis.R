@@ -1,3 +1,10 @@
+setClass("RedisConnection", slots = list(resource = "ANY"))
+
+setMethod("onValidate", "RedisConnection", function(object) {
+  message("Validating redis connection")
+  object@resource$PING()
+})
+
 #' @title Redis
 #'
 #' @description
@@ -11,37 +18,66 @@ Redis <- R6::R6Class(
     initialize = function(host = Sys.getenv("REDIS_HOST"),
                           port = Sys.getenv("REDIS_PORT"),
                           db = Sys.getenv("REDIS_DB")) {
-      self$connect(host, port, db)
+      self$open(host, port, db)
     },
-    connect = function(host = Sys.getenv("REDIS_HOST"),
-                       port = Sys.getenv("REDIS_PORT"),
-                       db = Sys.getenv("REDIS_DB")) {
+    open = function(host = Sys.getenv("REDIS_HOST"),
+                    port = Sys.getenv("REDIS_PORT"),
+                    db = Sys.getenv("REDIS_DB"),
+                    min_size = 1L,
+                    max_size = 5L,
+                    idle_timeout = 5L * 60L,
+                    validation_interval = 1L * 60L,
+                    state = NULL) {
       checkmate::assertString(host)
       checkmate::assertString(port)
       checkmate::assertString(db)
-      config <- redux::redis_config(host = host, port = port, db = db)
-      ok <- try(redux::hiredis(config), silent = TRUE)
-      if (inherits(ok, "try-error")) {
-        warning("REDIS connection failed")
-        private$.connection <- -1L
-      } else {
-        private$.connection <- ok
+      factory <- function() {
+        config <- redux::redis_config(host = host, port = port, db = db)
+        ok <- try(redux::hiredis(config), silent = TRUE)
+        if (inherits(ok, "try-error")) {
+          warning("REDIS connection failed")
+          return(-1L)
+        }
+        new("RedisConnection", resource = ok)
       }
+      private$.pool <- pool::poolCreate(factory,
+                                        minSize = min_size,
+                                        maxSize = max_size,
+                                        idleTimeout = idle_timeout,
+                                        validationInterval = validation_interval,
+                                        state = state)
       invisible(self)
     },
-    get = function(key) {
-      if (identical(private$.connection, -1L)) stop("REDIS connection is not open")
-      private$.connection$GET(key)
+    close = function() {
+      pool::poolClose(private$.pool)
+      invisible(self)
     },
-    set = function(key, value, EX = NULL, PX = NULL, condition = NULL) {
-      if (identical(private$.connection, -1L)) stop("REDIS connection is not open")
-      private$.connection$SET(key, value, EX, PX, condition)
+    get = function(key, opts = list()) {
+      if (identical(private$.pool, -1L)) stop("REDIS connection is not open")
+      checkmate::assertList(opts, names = "named")
+      conn <- pool::poolCheckout(private$.pool)
+      private$.json <- conn@resource$GET(key)
+      private$.dt <- yyjsonr::read_json_str(private$.json, opts = opts)
+      pool::poolReturn(conn)
+      return(self)
+    },
+    set = function(key, value, EX = NULL, PX = NULL, condition = NULL, opts = list()) {
+      if (identical(private$.pool, -1L)) stop("REDIS connection is not open")
+      checkmate::assertList(opts, names = "named")
+      conn <- pool::poolCheckout(private$.pool)
+      conn@resource$SET(key, yyjsonr::write_json_str(value, opts = opts), EX, PX, condition)
+      pool::poolReturn(conn)
+      return(self)
     }
   ),
   active = list(
-    connection = function() private$.connection
+    dt = function() private$.dt,
+    json = function() private$.json,
+    pool = function() private$.pool
   ),
   private = list(
-    .connection = NULL
+    .dt = NULL,
+    .json = NULL,
+    .pool = NULL
   )
 )

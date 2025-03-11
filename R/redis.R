@@ -1,7 +1,7 @@
 setClass("RedisConnection", slots = list(resource = "ANY"))
 
 setMethod("onValidate", "RedisConnection", function(object) {
-  message("Validating redis connection")
+  message("[", format(Sys.time()), "] ", "Validating Redis connection", "\n")
   object@resource$PING()
 })
 
@@ -58,8 +58,9 @@ Redis <- R6::R6Class(
       conn <- pool::poolCheckout(private$.pool)
       private$.json <- conn@resource$GET(key)
       private$.dt <- yyjsonr::read_json_str(private$.json, opts = opts)
+      if (checkmate::testDataFrame(private$.dt)) data.table::setDT(private$.dt)
       pool::poolReturn(conn)
-      return(self)
+      invisible(self)
     },
     set = function(key, value, EX = NULL, PX = NULL, condition = NULL, opts = list()) {
       if (identical(private$.pool, -1L)) stop("REDIS connection is not open")
@@ -67,7 +68,7 @@ Redis <- R6::R6Class(
       conn <- pool::poolCheckout(private$.pool)
       conn@resource$SET(key, yyjsonr::write_json_str(value, opts = opts), EX, PX, condition)
       pool::poolReturn(conn)
-      return(self)
+      invisible(self)
     }
   ),
   active = list(

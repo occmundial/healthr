@@ -7,17 +7,16 @@
 #'
 Model <- R6::R6Class(
   classname = "Model",
-  inherit = Metric,
   public = list(
     initialize = function(name) {
       private$.name <- paste("Model", name, by)
       invisible(self)
     },
-    normalize = function(dt, param) {
+    normalize = function(dt, period) {
       checkmate::assertDataTable(dt)
-      checkmate::assertR6(param, classes = "Parameter")
+      checkmate::assertInteger(period, lower = 1L)
       private$.dt <- data.table::copy(dt)
-      private$.dt[, group := period %% param$period]
+      private$.dt[, group := period %% period]
       index <- private$.dt[, .I[which.min(count)], by = .(group)]$V1
       private$.dt[index, count := NA_integer_]
       dt_stats <- private$.dt[, .(count = round(quantile(count, probs = 0.25, na.rm = TRUE))), by = .(group)]
@@ -27,7 +26,7 @@ Model <- R6::R6Class(
       dt_stats <- private$.dt[, .(count = round(quantile(count, probs = 0.75, na.rm = TRUE))), by = .(group)]
       private$.dt[is.na(count), count := dt_stats[.SD, count, on = .(group)]]
       private$.dt[, group := NULL]
-      private$.serie <- stats::ts(private$.dt$count, start = c(1L, 1L), frequency = param$period)
+      private$.serie <- stats::ts(private$.dt$count, start = c(1L, 1L), frequency = period)
       invisible(self)
     },
     train = function(k = 4L) {
@@ -37,13 +36,13 @@ Model <- R6::R6Class(
       private$.model <- forecast::tslm(private$.serie ~ fourier)
       invisible(self)
     },
-    predict = function(param, level = 99L, k = 4L) {
-      checkmate::assertR6(param, classes = "Parameter")
+    predict = function(period, level = 99L, k = 4L) {
+      checkmate::assertInt(period, lower = 1L)
       checkmate::assertInt(level, lower = 80L, upper = 99L)
       checkmate::assertInt(k, lower = 1L, upper = 5L)
       if (checkmate::testNull(private$.serie)) stop("Normalize the values first")
       if (checkmate::testNull(private$.model)) stop("Train the model first")
-      fourier <- data.frame(values = forecast::fourier(private$.serie, K = k, h = param$period))
+      fourier <- data.frame(values = forecast::fourier(private$.serie, K = k, h = period))
       linear <- forecast::forecast(private$.model, newdata = fourier, level = level)
       private$.prediction <- sapply(c("lower", "mean", "upper"), function(x) {
         values <- as.integer(linear[[x]])

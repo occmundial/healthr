@@ -8,10 +8,6 @@
 Model <- R6::R6Class(
   classname = "Model",
   public = list(
-    initialize = function(name) {
-      private$.name <- paste("Model", name, by)
-      invisible(self)
-    },
     normalize = function(dt, period) {
       checkmate::assertDataTable(dt)
       checkmate::assertInteger(period, lower = 1L)

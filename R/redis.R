@@ -15,24 +15,18 @@ setMethod("onValidate", "RedisConnection", function(object) {
 Redis <- R6::R6Class(
   classname = "Redis",
   public = list(
-    initialize = function(host = Sys.getenv("REDIS_HOST"),
-                          port = Sys.getenv("REDIS_PORT"),
-                          db = Sys.getenv("REDIS_DB")) {
-      self$open(host, port, db)
+    initialize = function(...) {
+      self$open(...)
     },
-    open = function(host = Sys.getenv("REDIS_HOST"),
-                    port = Sys.getenv("REDIS_PORT"),
-                    db = Sys.getenv("REDIS_DB"),
+    open = function(...,
                     min_size = 1L,
                     max_size = 5L,
                     idle_timeout = 5L * 60L,
                     validation_interval = 1L * 60L,
                     state = NULL) {
-      checkmate::assertString(host)
-      checkmate::assertString(port)
-      checkmate::assertString(db)
+      checkmate::assertList(list(...), types = "character", names = "named")
+      config <- redux::redis_config(...)
       factory <- function() {
-        config <- redux::redis_config(host = host, port = port, db = db)
         ok <- try(redux::hiredis(config), silent = TRUE)
         if (inherits(ok, "try-error")) {
           warning("REDIS connection failed")

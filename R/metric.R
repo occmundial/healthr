@@ -8,10 +8,6 @@
 Metric <- R6::R6Class(
   classname = "Metric",
   public = list(
-    initialize = function(name) {
-      private$.name <- paste("Metric", name)
-      invisible(self)
-    },
     count = function(dt, validator, sequence) {
       checkmate::assertDataTable(dt)
       checkmate::assertDataTable(validator)
@@ -29,12 +25,9 @@ Metric <- R6::R6Class(
     }
   ),
   active = list(
-    dt = function() private$.dt,
-    name = function() private$.name
+    dt = function() private$.dt
   ),
   private = list(
-    .dt = NULL,
-    .id = NULL,
-    .name = NULL
+    .dt = NULL
   )
 )

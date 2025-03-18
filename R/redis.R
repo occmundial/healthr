@@ -50,18 +50,18 @@ Redis <- R6::R6Class(
       if (identical(private$.pool, -1L)) stop("REDIS connection is not open")
       checkmate::assertList(opts, names = "named")
       conn <- pool::poolCheckout(private$.pool)
+      on.exit(pool::poolReturn(conn))
       private$.json <- conn@resource$GET(key)
       private$.dt <- yyjsonr::read_json_str(private$.json, opts = opts)
       if (checkmate::testDataFrame(private$.dt)) data.table::setDT(private$.dt)
-      pool::poolReturn(conn)
       invisible(self)
     },
     set = function(key, value, EX = NULL, PX = NULL, condition = NULL, opts = list()) {
       if (identical(private$.pool, -1L)) stop("REDIS connection is not open")
       checkmate::assertList(opts, names = "named")
       conn <- pool::poolCheckout(private$.pool)
+      on.exit(pool::poolReturn(conn))
       conn@resource$SET(key, yyjsonr::write_json_str(value, opts = opts), EX, PX, condition)
-      pool::poolReturn(conn)
       invisible(self)
     }
   ),

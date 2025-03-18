@@ -16,8 +16,6 @@ Creates a Model class
 \item \href{#method-Model-normalize}{\code{Model$normalize()}}
 \item \href{#method-Model-train}{\code{Model$train()}}
 \item \href{#method-Model-predict}{\code{Model$predict()}}
-\item \href{#method-Model-save}{\code{Model$save()}}
-\item \href{#method-Model-read}{\code{Model$read()}}
 \item \href{#method-Model-clone}{\code{Model$clone()}}
 }
 }
@@ -34,7 +32,7 @@ Creates a Model class
 \if{latex}{\out{\hypertarget{method-Model-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$new(name, query, by = 1L, horizont = 4L * 1440L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$new(name)}\if{html}{\out{</div>}}
 }
 
 }
@@ -43,7 +41,7 @@ Creates a Model class
 \if{latex}{\out{\hypertarget{method-Model-normalize}{}}}
 \subsection{Method \code{normalize()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$normalize()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$normalize(dt, param)}\if{html}{\out{</div>}}
 }
 
 }
@@ -61,25 +59,7 @@ Creates a Model class
 \if{latex}{\out{\hypertarget{method-Model-predict}{}}}
 \subsection{Method \code{predict()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$predict(level = 99L, k = 4L)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-save"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-save}{}}}
-\subsection{Method \code{save()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$save(redis)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-read"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-read}{}}}
-\subsection{Method \code{read()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$read(redis)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$predict(param, level = 99L, k = 4L)}\if{html}{\out{</div>}}
 }
 
 }

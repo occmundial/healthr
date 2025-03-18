@@ -7,16 +7,12 @@
 #'
 Model <- R6::R6Class(
   classname = "Model",
-  inherit = Metric,
   public = list(
-    initialize = function(name, query, by = 1L, horizont = 4L * 1440L) {
-      private$.name <- paste("Model", name, by)
-      self$set(query, by, horizont)
-      invisible(self)
-    },
-    normalize = function() {
-      if (checkmate::testNull(private$.dt)) stop("Count the values first")
-      private$.dt[, group := period %% private$.params$period]
+    normalize = function(dt, period) {
+      checkmate::assertDataTable(dt)
+      checkmate::assertInteger(period, lower = 1L)
+      private$.dt <- data.table::copy(dt)
+      private$.dt[, group := period %% period]
       index <- private$.dt[, .I[which.min(count)], by = .(group)]$V1
       private$.dt[index, count := NA_integer_]
       dt_stats <- private$.dt[, .(count = round(quantile(count, probs = 0.25, na.rm = TRUE))), by = .(group)]
@@ -26,7 +22,7 @@ Model <- R6::R6Class(
       dt_stats <- private$.dt[, .(count = round(quantile(count, probs = 0.75, na.rm = TRUE))), by = .(group)]
       private$.dt[is.na(count), count := dt_stats[.SD, count, on = .(group)]]
       private$.dt[, group := NULL]
-      private$.serie <- stats::ts(private$.dt$count, start = c(1L, 1L), frequency = private$.params$period)
+      private$.serie <- stats::ts(private$.dt$count, start = c(1L, 1L), frequency = period)
       invisible(self)
     },
     train = function(k = 4L) {
@@ -36,12 +32,13 @@ Model <- R6::R6Class(
       private$.model <- forecast::tslm(private$.serie ~ fourier)
       invisible(self)
     },
-    predict = function(level = 99L, k = 4L) {
+    predict = function(period, level = 99L, k = 4L) {
+      checkmate::assertInt(period, lower = 1L)
       checkmate::assertInt(level, lower = 80L, upper = 99L)
       checkmate::assertInt(k, lower = 1L, upper = 5L)
       if (checkmate::testNull(private$.serie)) stop("Normalize the values first")
       if (checkmate::testNull(private$.model)) stop("Train the model first")
-      fourier <- data.frame(values = forecast::fourier(private$.serie, K = k, h = private$.params$period))
+      fourier <- data.frame(values = forecast::fourier(private$.serie, K = k, h = period))
       linear <- forecast::forecast(private$.model, newdata = fourier, level = level)
       private$.prediction <- sapply(c("lower", "mean", "upper"), function(x) {
         values <- as.integer(linear[[x]])
@@ -49,26 +46,16 @@ Model <- R6::R6Class(
         values
       }, simplify = FALSE)
       invisible(self)
-    },
-    save = function(redis) {
-      checkmate::assertR6(redis, classes = "Redis")
-      if (checkmate::testNull(private$.prediction)) stop("Predict the values first")
-      redis$set(private$.name, yyjsonr::write_json_str(private$.prediction))
-      # invisible(self)
-    },
-    read = function(redis) {
-      checkmate::assertR6(redis, classes = "Redis")
-      json <- redis$get(private$.name)
-      private$.prediction <- yyjsonr::read_json_str(json, opts = list(obj_of_arrs_to_df = FALSE))
-      invisible(self)
     }
   ),
   active = list(
+    dt = function() private$.dt,
     serie = function() private$.serie,
     model = function() private$.model,
     prediction = function() private$.prediction
   ),
   private = list(
+    .dt = NULL,
     .serie = NULL,
     .model = NULL,
     .prediction = NULL

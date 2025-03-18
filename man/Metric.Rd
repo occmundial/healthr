@@ -14,8 +14,6 @@ Creates a Metric class
 \itemize{
 \item \href{#method-Metric-new}{\code{Metric$new()}}
 \item \href{#method-Metric-count}{\code{Metric$count()}}
-\item \href{#method-Metric-save}{\code{Metric$save()}}
-\item \href{#method-Metric-read}{\code{Metric$read()}}
 \item \href{#method-Metric-clone}{\code{Metric$clone()}}
 }
 }
@@ -31,7 +29,7 @@ Creates a Metric class
 \if{latex}{\out{\hypertarget{method-Metric-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Metric$new(name, query, by = 1L, horizont = 1440L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Metric$new(name)}\if{html}{\out{</div>}}
 }
 
 }
@@ -40,25 +38,7 @@ Creates a Metric class
 \if{latex}{\out{\hypertarget{method-Metric-count}{}}}
 \subsection{Method \code{count()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Metric$count(odbc)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Metric-save"></a>}}
-\if{latex}{\out{\hypertarget{method-Metric-save}{}}}
-\subsection{Method \code{save()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Metric$save(redis)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Metric-read"></a>}}
-\if{latex}{\out{\hypertarget{method-Metric-read}{}}}
-\subsection{Method \code{read()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Metric$read(redis)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Metric$count(dt, param)}\if{html}{\out{</div>}}
 }
 
 }

@@ -10,7 +10,8 @@ Creates a Redis class
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Redis-new}{\code{Redis$new()}}
-\item \href{#method-Redis-connect}{\code{Redis$connect()}}
+\item \href{#method-Redis-open}{\code{Redis$open()}}
+\item \href{#method-Redis-close}{\code{Redis$close()}}
 \item \href{#method-Redis-get}{\code{Redis$get()}}
 \item \href{#method-Redis-set}{\code{Redis$set()}}
 \item \href{#method-Redis-clone}{\code{Redis$clone()}}
@@ -30,15 +31,29 @@ Creates a Redis class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Redis-connect"></a>}}
-\if{latex}{\out{\hypertarget{method-Redis-connect}{}}}
-\subsection{Method \code{connect()}}{
+\if{html}{\out{<a id="method-Redis-open"></a>}}
+\if{latex}{\out{\hypertarget{method-Redis-open}{}}}
+\subsection{Method \code{open()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Redis$connect(
+\if{html}{\out{<div class="r">}}\preformatted{Redis$open(
   host = Sys.getenv("REDIS_HOST"),
   port = Sys.getenv("REDIS_PORT"),
-  db = Sys.getenv("REDIS_DB")
+  db = Sys.getenv("REDIS_DB"),
+  min_size = 1L,
+  max_size = 5L,
+  idle_timeout = 5L * 60L,
+  validation_interval = 1L * 60L,
+  state = NULL
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Redis-close"></a>}}
+\if{latex}{\out{\hypertarget{method-Redis-close}{}}}
+\subsection{Method \code{close()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Redis$close()}\if{html}{\out{</div>}}
 }
 
 }
@@ -47,7 +62,7 @@ Creates a Redis class
 \if{latex}{\out{\hypertarget{method-Redis-get}{}}}
 \subsection{Method \code{get()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Redis$get(key)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Redis$get(key, opts = list())}\if{html}{\out{</div>}}
 }
 
 }
@@ -56,7 +71,7 @@ Creates a Redis class
 \if{latex}{\out{\hypertarget{method-Redis-set}{}}}
 \subsection{Method \code{set()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Redis$set(key, value, EX = NULL, PX = NULL, condition = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Redis$set(key, value, EX = NULL, PX = NULL, condition = NULL, opts = list())}\if{html}{\out{</div>}}
 }
 
 }
